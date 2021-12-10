@@ -14,4 +14,7 @@
 * pip install -U setuptools pip
 * pip3 install flask
 * python3 -m pip install gevent
+* pip3 install gevent
+* sudo apt install peewee
+* pip3 install peewee
 
