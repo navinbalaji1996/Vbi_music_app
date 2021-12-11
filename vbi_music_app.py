@@ -11,6 +11,9 @@ create_database()
 create_tables()
 load_songs()
 
+with open('config/config.json') as config_file:
+    config = json.load(config_file)
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -49,7 +52,7 @@ def list_all_songs():
     try:
         token = request.headers['token']
         user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             songs_list = get_all_songs()
             return {'status':200, 'message': songs_list}
@@ -64,7 +67,7 @@ def search_songs():
     try:
         token = request.headers['token']
         user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             selected_word = request.args.get('song_search')
             response = get_searched_songs(selected_word)
@@ -80,7 +83,7 @@ def playlist_creation():
     try:
         token = request.headers['token']
         user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             playlist_name = request.json.get('playlist_name')
             if playlist_name == '':
@@ -102,7 +105,7 @@ def add_songs_to_playlist():
     try:
         token = request.headers['token']
         user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             playlist_id = request.json.get('playlist_id')
             song_id = request.json.get('song_id')
@@ -124,7 +127,7 @@ def get_playlist_songs():
     try:
         token = request.headers['token']
         user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             playlist_id = request.args.get('playlist_id')
             songs_list = get_songs_from_playlist(playlist_id, user_id)  
@@ -140,7 +143,7 @@ def shuffle_playlist():
     try:
         token = request.headers['token']
         user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, token)
+        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             playlist_id = request.json.get('playlist_id')
             songs_list = get_songs_from_playlist(playlist_id, user_id)

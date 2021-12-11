@@ -30,10 +30,10 @@ class VbiLib:
             return 0, 'Password must contain atleast one Special character'
         return 1, 'Verified'
 
-    def token_validation(self, user_id, token):
+    def token_validation(self, user_id, secret_key, token):
         user_details = get_user_by_id(user_id)
         if user_details[0]:
-            generated_token = get_token(user_details[1][0], user_details[1][1])
+            generated_token = get_token(user_details[1][0], user_details[1][1], secret_key)
             if token == generated_token:
                 return 1,''
             else:

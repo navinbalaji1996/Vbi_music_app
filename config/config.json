@@ -1,15 +1,16 @@
 {
  "port_no" : 5000,
+ "secret_key": "vbi#123",
  "songs_list": [
                 "believer.mp3",
                 "cheap thrills.mp3",
                 "power.mp3",
                 "imagine.mp3",
-		"boss baby.mp3",
-		 "we will rock you.mp3",
-		 "firewall.mp3'",
-		 "mozilla.mp3",
-		 "google chrome.mp3",
-		 "linux.mp3"
+		        "boss baby.mp3",
+		        "we will rock you.mp3",
+		        "firewall.mp3'",
+		        "mozilla.mp3",
+		        "google chrome.mp3",
+		        "linux.mp3"
                ]
 }
