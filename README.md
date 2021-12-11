@@ -35,7 +35,7 @@ playlist.
 * sid = song id
 
 
-Purpose  |  url  | Parameters |  Json |   Headers | Method
+Purpose  |  url  | Parameters |  Json |  Headers | Method
 --- | --- | --- | --- | --- | ---
 Signup | http://ip:port/signup | - | {'email':email, 'password:password}  |  -  |  POST
 For getting token |  http://ip:port/auth/login |  -  | {'email':email, 'password:password} | - |  POST
@@ -52,3 +52,8 @@ Shuffling Playlist | http://ip:port/shuffle/playlist |  - | {'user_id' : uid, 'p
 * Install the Virtual Environment as mentioned above
 * source vbi_virtual_environment/bin/activate
 * python3 vbi_music_app.py
+
+
+## Note
+* SongsList table will be loaded with default songs
+* I didn't add virtual environment in .gitignore because if you faced any issues in installation, you can make use of this virtual environment
