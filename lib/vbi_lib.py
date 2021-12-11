@@ -1,7 +1,7 @@
 import re
 from random import choice
 from sqlite_database.db_connection import *
-from lib.jwt_token import get_token
+from .jwt_token import get_token
 
 class VbiLib:
 
