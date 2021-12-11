@@ -57,7 +57,7 @@ def get_auth_token():
         debug_log.error(str(err))
 
 
-@app.route('/get/all_songs', methods=['GET'])
+@app.route('/get/all/songs', methods=['GET'])
 def list_all_songs():
     try:
         token = request.headers['token']

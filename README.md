@@ -16,8 +16,53 @@ playlist.
 * source vbi_virtual_environment/bin/activate
 * pip install -U setuptools pip
 * pip3 install flask
-<> (python3 -m pip install gevent)
+<!__ (python3 -m pip install gevent) __>
 * pip3 install gevent
-<> (sudo apt install peewee)
+<!__ (sudo apt install peewee) __>
 * pip3 install peewee
+
+## Api Table
+
+### Notations
+
+* ip = localhost (for testing local)
+* port = 5000 (port no taken from config.json)
+* uid = userid 
+* token = jwt token
+* song = songs to be searched(i.e "im" , "ch")
+* pname = playlist_name
+* pid = playlist id
+* sid = song id
+
+________________________________________________________________________________________________________________________________________________________
+| Purpose        |  url                           | Parameters        |  Json                |   Headers       | Method  |   Response                   |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+|  Signup        |  http://ip:port/signup         |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,   |
+|                |                                |                   |   'password:password}|                 |         |     'message' : return msg}  |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+| For getting    |  http://ip:port/auth/login     |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,   |
+|    token       |                                |                   | 'password:password}  |                 |         |   'message' : return msg}    |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+| Get all songs  | http://ip:port/get/all/songs   | {'user_id' : uid} |        -             | {'token':token} |  GET    |   {'status' : status_code,   |
+|                |                                |                   |                      |                 |         |   'message' : return msg}    |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+| Songs search   | http://ip:port/search/songs    | {'user_id' : uid, |         -            | {'token':token} |  GET    |   {'status' : status_code,   |
+|                |                                |  'song_search':   |                      |                 |         |    'message' : return msg}   |
+|                |                                |       song}       |                      |                 |         |                              |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+|   Playlist     | http://ip:port/create/playlist |      -            | {'user_id' : uid,    | {'token':token} |  POST   |   {'status' : status_code,   |
+|   creation     |                                |                   |  'playlist_name':    |                 |         |     'message' : return msg}  |
+|                |                                |                   |      pname           |                 |         |                              |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+|  Add songs to  | http://ip:port/add/playlist/   |       -           | {'user_id' : uid,    | {'token':token} |  POST   |    {'status' : status_code,  |
+|    playlist    |                       songs    |                   |  'playlist_id':pid,  |                 |         |     'message' : return msg}  |
+|                |                                |                   |   'song_id': sid}    |                 |         |                              |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+| Get songs from | http://ip:port/get/playlist/   | {'user_id' : uid, |         -            | {'token':token} |  GET    |    {'status' : status_code,  |
+|   specific     |                        songs   | 'playlist_id':pid}|                      |                 |         |    'message' : return msg}   |
+|   playlist     |                                |                   |                      |                 |         |                              |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
+|    Shuffling   | http://ip:port/shuffle/playlist|       -           | {'user_id' : uid,    | {'token':token} |  POST   |   {'status' : status_code,   |
+|     Playlist   |                                |                   | 'playlist_id':pid}   |                 |         |    'message' : return msg}   |
+|________________|________________________________|___________________|______________________|_________________|_________|______________________________|
 
