@@ -36,6 +36,6 @@ playlist.
 
 
  Purpose  |  url  | Parameters |  Json |   Headers | Method  |  Response
-___ | ___ |  ___ | ___ | ___ | ___ | ___ 
+_ _ _ | _ _ _ |  _ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ 
   Signup        |  http://ip:port/signup  |  - | {'email':email, |  - |  POST   |   {'status' : status_code,  
 
