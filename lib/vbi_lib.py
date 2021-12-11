@@ -1,4 +1,7 @@
 import re
+from random import choice
+from sqlite_database.db_connection import *
+from lib.jwt_token import get_token
 
 class VbiLib:
 
@@ -15,6 +18,8 @@ class VbiLib:
             return 0, 'email address is not valid'
         elif len(password) < 8:
             return 0, 'Password must contain atleast 8 characters'
+        elif not password[0].isalpha():
+            return 0, 'Password should starts with Alphabet'
         elif not any(map(str.islower, password)):
             return 0, 'Password must contain atleast one lower character'
         elif not any(map(str.isupper, password)):
@@ -25,7 +30,25 @@ class VbiLib:
             return 0, 'Password must contain atleast one Special character'
         return 1, 'Verified'
 
+    def token_validation(self, user_id, token):
+        user_details = get_user_by_id(user_id)
+        if user_details[0]:
+            generated_token = get_token(user_details[1][0], user_details[1][1])
+            if token == generated_token:
+                return 1,''
+            else:
+                return 0, {'status':401, 'message':'Access token is denied'}
+        else:
+            return 0, {'status':400, 'message':'Invalid User id'}
+
+    def get_shuffle_songs_list(self, songs_list):
+        shuffled_list = []
+        for i in range(len(songs_list)):
+            ran = choice([each for each in songs_list if each not in shuffled_list])
+            shuffled_list.append(ran)
+        return shuffled_list
+
 
 if __name__ == '__main__':
     vbi = VbiLib()
-    print(vbi.validate_credentials('navinbalaji1996@gmail.com', 'NAVINBALA1@'))
+    print(vbi.get_shuffle_songs_list([1,2,3]))
