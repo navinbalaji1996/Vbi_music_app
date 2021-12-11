@@ -36,8 +36,8 @@ playlist.
 
 
  Purpose        |  url                           | Parameters        |  Json                |   Headers       | Method  |   Response
-_ _ _             |________________________________|___________________|______________________|_________________|_________|______________________________
-  Signup        |  http://ip:port/signup         |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,   
+_ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ | 
+  Signup        |  http://ip:port/signup         |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,  
                 |                                |                   |   'password:password}|                 |         |     'message' : return msg}  
  For getting    |  http://ip:port/auth/login     |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,   
     token       |                                |                   | 'password:password}  |                 |         |   'message' : return msg}    
