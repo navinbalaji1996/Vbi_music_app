@@ -1,5 +1,8 @@
 # Vbi_music_app
 
+Vbi_music App is an online Application which contains songs by default in which user can register an account, search songs, create playlist and add songs to the
+playlist.
+
 
 ## Installation using Virtual Environment
 * sudo add-apt-repository ppa:deadsnakes/ppa
@@ -13,8 +16,8 @@
 * source vbi_virtual_environment/bin/activate
 * pip install -U setuptools pip
 * pip3 install flask
-#* python3 -m pip install gevent
+<> (python3 -m pip install gevent)
 * pip3 install gevent
-#* sudo apt install peewee
+<> (sudo apt install peewee)
 * pip3 install peewee
 
