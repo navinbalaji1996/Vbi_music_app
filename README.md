@@ -40,8 +40,15 @@ Purpose  |  url  | Parameters |  Json |   Headers | Method
 Signup | http://ip:port/signup | - | {'email':email, 'password:password}  |  -  |  POST
 For getting token |  http://ip:port/auth/login |  -  | {'email':email, 'password:password} | - |  POST
 Get all songs | http://ip:port/get/all/songs   | {'user_id' : uid} | -| {'token':token} |  GET
-Songs search   | http://ip:port/search/songs  | {'user_id' : uid,'song_search':song} |  -  | {'token':token} |  GET
-Playlist creation | http://ip:port/create/playlist | -  | {'user_id' : uid, 'playlist_name':pname   | {'token':token} |  POST
+Songs search   | http://ip:port/search/songs  | {'user_id':uid, 'song_search':song} |  -  | {'token':token} |  GET
+Playlist creation | http://ip:port/create/playlist | -  | {'user_id' : uid, 'playlist_name':pname}  | {'token':token} |  POST
 Add songs to playlist | http://ip:port/add/playlist/songs  |  -| {'user_id' : uid, 'playlist_id':pid, 'song_id':sid}   | {'token':token} |  POST
 Get songs from specific playlist| http://ip:port/get/playlist/songs   | {'user_id' : uid, 'playlist_id':pid}|  - | {'token':token} |  GET
 Shuffling Playlist | http://ip:port/shuffle/playlist |  - | {'user_id' : uid, 'playlist_id':pid}   | {'token':token} |  POST
+
+
+
+## How to run
+* Install the Virtual Environment as mentioned above
+* source vbi_virtual_environment/bin/activate
+* python3 vbi_music_app.py
