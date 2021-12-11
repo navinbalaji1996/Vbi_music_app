@@ -36,30 +36,6 @@ playlist.
 
 
  Purpose  |  url  | Parameters |  Json |   Headers | Method  |  Response
-_ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ |
- 
-  Signup        |  http://ip:port/signup         |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,  
-                |                                |                   |   'password:password}|                 |         |     'message' : return msg}  
- For getting    |  http://ip:port/auth/login     |      -            | {'email':email,      |        -        |  POST   |   {'status' : status_code,   
-    token       |                                |                   | 'password:password}  |                 |         |   'message' : return msg}    
-
- Get all songs  | http://ip:port/get/all/songs   | {'user_id' : uid} |        -             | {'token':token} |  GET    |   {'status' : status_code,   
-                |                                |                   |                      |                 |         |   'message' : return msg}    
- Songs search   | http://ip:port/search/songs    | {'user_id' : uid, |         -            | {'token':token} |  GET    |   {'status' : status_code,   
-                |                                |  'song_search':   |                      |                 |         |    'message' : return msg}  
-                |                                |       song}       |                      |                 |         |                              
-   Playlist     | http://ip:port/create/playlist |      -            | {'user_id' : uid,    | {'token':token} |  POST   |   {'status' : status_code,   
-   creation     |                                |                   |  'playlist_name':    |                 |         |     'message' : return msg}  
-                |                                |                   |      pname           |                 |         |                             
-
-  Add songs to  | http://ip:port/add/playlist/   |       -           | {'user_id' : uid,    | {'token':token} |  POST   |    {'status' : status_code,  
-    playlist    |                       songs    |                   |  'playlist_id':pid,  |                 |         |     'message' : return msg} |               |                                |                   |   'song_id': sid}    |                 |         | 
-
- Get songs from | http://ip:port/get/playlist/   | {'user_id' : uid, |         -            | {'token':token} |  GET    |    {'status' : status_code,  
-   specific     |                        songs   | 'playlist_id':pid}|                      |                 |         |    'message' : return msg}   
-   playlist     |                                |                   |                      |                 |         |                              
-
-    Shuffling   | http://ip:port/shuffle/playlist|       -           | {'user_id' : uid,    | {'token':token} |  POST   |   {'status' : status_code,   
-     Playlist   |                                |                   | 'playlist_id':pid}   |                 |         |    'message' : return msg}   
-
+___ | ___ |  ___ | ___ | ___ | ___ | ___ 
+  Signup        |  http://ip:port/signup  |  - | {'email':email, |  - |  POST   |   {'status' : status_code,  
 
