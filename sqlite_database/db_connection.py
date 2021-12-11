@@ -1,10 +1,12 @@
 import json
 import peewee
 import re
+from lib.logger import setup_logger
 from peewee import *
 
 
 db = SqliteDatabase('sqlite_database/vbi_music_app.db', pragmas={'foreign_keys': 1})
+debug_log = setup_logger('debug', 'debug.log')
 
 
 class BaseModel(Model):
@@ -82,7 +84,9 @@ def create_user(email, password):
         Users().create(email=email,password=password)
         return 1
     except Exception as err:
+        debug_log.error(str(err))
         return 0
+
 
 
 def create_playlist(playlist_name, user_id):
@@ -95,6 +99,7 @@ def create_playlist(playlist_name, user_id):
             return 1
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 def create_playlist_songs(playlist_id, user_id, song_id):
@@ -107,6 +112,7 @@ def create_playlist_songs(playlist_id, user_id, song_id):
             return 1
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
         return -1
 
 def get_songs_from_playlist(playlist_id, user_id):
@@ -119,6 +125,7 @@ def get_songs_from_playlist(playlist_id, user_id):
         return songs_list
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 def get_user_by_id(user_id):
@@ -130,6 +137,7 @@ def get_user_by_id(user_id):
             return 0, ''
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 

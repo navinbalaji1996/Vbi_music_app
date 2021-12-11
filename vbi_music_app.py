@@ -3,6 +3,7 @@ from flask import Flask, request
 from gevent.pywsgi import WSGIServer
 from lib.vbi_lib import VbiLib
 from lib.jwt_token import get_token
+from lib.logger import setup_logger
 from sqlite_database.db_connection import *
 app = Flask('__name__')
 vbi_lib = VbiLib()
@@ -14,6 +15,8 @@ load_songs()
 with open('config/config.json') as config_file:
     config = json.load(config_file)
 
+debug_log = setup_logger('debug', 'debug.log')
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -23,13 +26,17 @@ def signup():
         signup_result = vbi_lib.validate_credentials(email, password)
         if signup_result[0]:
            if create_user(email, password):
+               debug_log.info('User registered')
                return {'status':201, 'message':'User registered'}
            else:
+               debug_log.info('Email Address already exists')
                return {'status':401, 'message':'email address already exists'}
         else:
-           return {'status':400, 'message':signup_result[1]}
+            debug_log.info(signup_result[1]['message'])
+            return {'status':400, 'message':signup_result[1]}
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/auth/login', methods=['POST'])
@@ -40,11 +47,14 @@ def get_auth_token():
         valid_user = login_validation(email, password)
         if valid_user:
             jwt_token = get_token(email, password)
+            debug_log.info('Jwt Token generated')
             return {'status':200, 'message':jwt_token}
         else:
+            debug_log.info('Invalid Credentails for getting token')
             return {'status': 401, 'message': 'Invalid User'}
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/get/all_songs', methods=['GET'])
@@ -55,11 +65,14 @@ def list_all_songs():
         user = vbi_lib.token_validation(user_id, config['secret_key'], token)
         if user[0]:
             songs_list = get_all_songs()
+            debug_log.info('Fetched all songs list')
             return {'status':200, 'message': songs_list}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/search/songs', methods=['GET'])
@@ -71,11 +84,14 @@ def search_songs():
         if user[0]:
             selected_word = request.args.get('song_search')
             response = get_searched_songs(selected_word)
+            debug_log.info('Songs search is done')
             return {'status':200, 'message':response}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/create/playlist', methods=['POST'])
@@ -87,17 +103,22 @@ def playlist_creation():
         if user[0]:
             playlist_name = request.json.get('playlist_name')
             if playlist_name == '':
+                debug_log.info('playlist name entered is not valid')
                 return {'status':400, 'message': 'Playlist Name is not Valid'}
             else:
                 playlist = create_playlist(playlist_name, user_id)
                 if playlist == 1:
+                    debug_log.info('playlist created successfully')
                     return {'status':201, 'message': 'Playlist Created'}
                 else:
+                    debug_log.info('playlist already exists')
                     return {'status':401, 'message': 'Playlist already exists'}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/add/playlist/songs',  methods=['POST'])
@@ -111,15 +132,20 @@ def add_songs_to_playlist():
             song_id = request.json.get('song_id')
             playlist_songs = create_playlist_songs(playlist_id, user_id, song_id)
             if playlist_songs == 1:
+                debug_log.info('Song is added to the playlist')
                 return {'status': 201, 'message': 'Song is added to the playlist'}
             elif playlist_songs == -1:
+                debug_log.info('Invalid song id or playlist id')
                 return {'status': 401, 'message': 'Invalid song id or playlist id'}
             else:
+                debug_log.info('Song is already added')
                 return {'status': 401, 'message': 'Song is already added'}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/get/playlist/songs', methods=['GET'])
@@ -131,11 +157,14 @@ def get_playlist_songs():
         if user[0]:
             playlist_id = request.args.get('playlist_id')
             songs_list = get_songs_from_playlist(playlist_id, user_id)  
+            debug_log.info('Song for playlist is fetched')
             return {'status': 200, 'message': songs_list}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]   
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 @app.route('/shuffle/playlist', methods=['POST'])
@@ -147,12 +176,15 @@ def shuffle_playlist():
         if user[0]:
             playlist_id = request.json.get('playlist_id')
             songs_list = get_songs_from_playlist(playlist_id, user_id)
-            shuffled_songs = vbi_lib.get_shuffle_songs_list(songs_list)  
+            shuffled_songs = vbi_lib.get_shuffle_songs_list(songs_list) 
+            debug_log.info('Songs for the playlist is shuffled') 
             return {'status': 200, 'message': shuffled_songs}
         else:
+            debug_log.info(user[1]['message'])
             return user[1]
     except Exception as err:
         print(err)
+        debug_log.error(str(err))
 
 
 if __name__ == '__main__':
