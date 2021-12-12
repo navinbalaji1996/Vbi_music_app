@@ -32,7 +32,7 @@ def signup():
                debug_log.info('Email Address already exists')
                return {'status':401, 'message':'email address already exists'}
         else:
-            debug_log.info(signup_result[1]['message'])
+            debug_log.info(signup_result[1])
             return {'status':400, 'message':signup_result[1]}
     except Exception as err:
         print(err)
@@ -67,8 +67,8 @@ def list_all_songs():
             debug_log.info('Fetched all songs list')
             return {'status':200, 'message': songs_list}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}
     except Exception as err:
         print(err)
         debug_log.error(str(err))
@@ -85,8 +85,8 @@ def search_songs():
             debug_log.info('Songs search is done')
             return {'status':200, 'message':response}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}
     except Exception as err:
         print(err)
         debug_log.error(str(err))
@@ -111,8 +111,8 @@ def playlist_creation():
                     debug_log.info('playlist already exists')
                     return {'status':401, 'message': 'Playlist already exists'}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}
     except Exception as err:
         print(err)
         debug_log.error(str(err))
@@ -137,8 +137,8 @@ def add_songs_to_playlist():
                 debug_log.info('Song is already added')
                 return {'status': 401, 'message': 'Song is already added'}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}
     except Exception as err:
         print(err)
         debug_log.error(str(err))
@@ -151,12 +151,15 @@ def get_playlist_songs():
         user = decode_token(token, config['secret_key'])
         if user[0]:
             playlist_id = request.args.get('playlist_id')
-            songs_list = get_songs_from_playlist(playlist_id, user[1])  
-            debug_log.info('Song for playlist is fetched')
-            return {'status': 200, 'message': songs_list}
+            songs_list = get_songs_from_playlist(playlist_id, user[1])
+            if songs_list[0]:
+                debug_log.info('Song for playlist is fetched')
+                return {'status': 200, 'message': songs_list[1]}
+            else:
+                return {'status':400, 'message': songs_list[1]}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]   
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}   
     except Exception as err:
         print(err)
         debug_log.error(str(err))
@@ -170,12 +173,15 @@ def shuffle_playlist():
         if user[0]:
             playlist_id = request.json.get('playlist_id')
             songs_list = get_songs_from_playlist(playlist_id, user[1])
-            shuffled_songs = vbi_lib.get_shuffle_songs_list(songs_list) 
-            debug_log.info('Songs for the playlist is shuffled') 
-            return {'status': 200, 'message': shuffled_songs}
+            if songs_list[0]:
+                shuffled_songs = vbi_lib.get_shuffle_songs_list(songs_list[1]) 
+                debug_log.info('Songs for the playlist is shuffled') 
+                return {'status': 200, 'message': shuffled_songs}
+            else:
+                return {'status':400, 'message': songs_list[1]}
         else:
-            debug_log.info(user[1]['message'])
-            return user[1]
+            debug_log.info(user[1])
+            return {'status':401, 'message':user[1]}
     except Exception as err:
         print(err)
         debug_log.error(str(err))

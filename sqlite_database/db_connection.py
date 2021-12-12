@@ -116,12 +116,16 @@ def create_playlist_songs(playlist_id, user_id, song_id):
 
 def get_songs_from_playlist(playlist_id, user_id):
     try:
-        songs = PlayListSongs().select().where(PlayListSongs.playlist_id == playlist_id, PlayListSongs.user_id == user_id)
-        songs_list = []
-        for each in songs:
-            song = SongsList().select().where(SongsList.song_id == each.song_id)
-            songs_list.append(song[0].song_name)
-        return songs_list
+        playlist = PlayList().select().where(PlayList.playlist_id == playlist_id, PlayList.user_id == user_id).count()
+        if playlist:
+            songs = PlayListSongs().select().where(PlayListSongs.playlist_id == playlist_id, PlayListSongs.user_id == user_id)
+            songs_list = []
+            for each in songs:
+                song = SongsList().select().where(SongsList.song_id == each.song_id)
+                songs_list.append(song[0].song_name)
+            return 1, songs_list
+        else:
+            return 0, 'Invalid PlayList id'
     except Exception as err:
         print(err)
         debug_log.error(str(err))
