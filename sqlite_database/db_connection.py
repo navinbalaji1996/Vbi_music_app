@@ -140,6 +140,14 @@ def get_user_by_id(user_id):
         debug_log.error(str(err))
 
 
+def get_user_id(email, password):
+    try:
+        user = Users.select().where(Users.email == email, Users.password == password)
+        if user.count():
+            return 1, user[0].user_id
+        else:
+            return 0, 'Invalid Credentials'
+
 
 if __name__ == '__main__':
     create_database()

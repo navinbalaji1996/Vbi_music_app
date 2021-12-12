@@ -20,6 +20,7 @@ playlist.
 * pip3 install gevent
 <!__ (sudo apt install peewee) __>
 * pip3 install peewee
+* pip3 install pyjwt
 
 ## Api Table
 
