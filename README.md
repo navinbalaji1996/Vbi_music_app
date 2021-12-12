@@ -40,12 +40,12 @@ Purpose  |  url  | Parameters |  Json |  Headers | Method
 --- | --- | --- | --- | --- | ---
 Signup | http://ip:port/signup | - | {'email':email, 'password:password}  |  -  |  POST
 For getting token |  http://ip:port/auth/login |  -  | {'email':email, 'password:password} | - |  POST
-Get all songs | http://ip:port/get/all/songs   | {'user_id' : uid} | -| {'token':token} |  GET
-Songs search   | http://ip:port/search/songs  | {'user_id':uid, 'song_search':song} |  -  | {'token':token} |  GET
-Playlist creation | http://ip:port/create/playlist | -  | {'user_id' : uid, 'playlist_name':pname}  | {'token':token} |  POST
-Add songs to playlist | http://ip:port/add/playlist/songs  |  -| {'user_id' : uid, 'playlist_id':pid, 'song_id':sid}   | {'token':token} |  POST
-Get songs from specific playlist| http://ip:port/get/playlist/songs   | {'user_id' : uid, 'playlist_id':pid}|  - | {'token':token} |  GET
-Shuffling Playlist | http://ip:port/shuffle/playlist |  - | {'user_id' : uid, 'playlist_id':pid}   | {'token':token} |  POST
+Get all songs | http://ip:port/get/all/songs   | - | -| {'token':token} |  GET
+Songs search   | http://ip:port/search/songs  | {'song_search':song} |  -  | {'token':token} |  GET
+Playlist creation | http://ip:port/create/playlist | -  | {'playlist_name':pname}  | {'token':token} |  POST
+Add songs to playlist | http://ip:port/add/playlist/songs  |  -| {'playlist_id':pid, 'song_id':sid}   | {'token':token} |  POST
+Get songs from specific playlist| http://ip:port/get/playlist/songs   | {'playlist_id':pid}|  - | {'token':token} |  GET
+Shuffling Playlist | http://ip:port/shuffle/playlist |  - | {'playlist_id':pid}   | {'token':token} |  POST
 
 
 

@@ -2,7 +2,7 @@ import json
 from flask import Flask, request
 from gevent.pywsgi import WSGIServer
 from lib.vbi_lib import VbiLib
-from lib.jwt_token import get_token
+from lib.jwt_token import get_token, decode_token
 from lib.logger import setup_logger
 from sqlite_database.db_connection import *
 app = Flask('__name__')
@@ -44,9 +44,9 @@ def get_auth_token():
     try:
         email = request.json.get('email')
         password = request.json.get('password')
-        valid_user = login_validation(email, password)
-        if valid_user:
-            jwt_token = get_token(email, password)
+        user_id = get_user_id(email, password)
+        if user_id[0]:
+            jwt_token = get_token(email, user_id[1], config['secret_key'])
             debug_log.info('Jwt Token generated')
             return {'status':200, 'message':jwt_token}
         else:
@@ -61,8 +61,7 @@ def get_auth_token():
 def list_all_songs():
     try:
         token = request.headers['token']
-        user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             songs_list = get_all_songs()
             debug_log.info('Fetched all songs list')
@@ -79,8 +78,7 @@ def list_all_songs():
 def search_songs():
     try:
         token = request.headers['token']
-        user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             selected_word = request.args.get('song_search')
             response = get_searched_songs(selected_word)
@@ -98,15 +96,14 @@ def search_songs():
 def playlist_creation():
     try:
         token = request.headers['token']
-        user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             playlist_name = request.json.get('playlist_name')
             if playlist_name == '':
                 debug_log.info('playlist name entered is not valid')
                 return {'status':400, 'message': 'Playlist Name is not Valid'}
             else:
-                playlist = create_playlist(playlist_name, user_id)
+                playlist = create_playlist(playlist_name, user[1])
                 if playlist == 1:
                     debug_log.info('playlist created successfully')
                     return {'status':201, 'message': 'Playlist Created'}
@@ -125,12 +122,11 @@ def playlist_creation():
 def add_songs_to_playlist():
     try:
         token = request.headers['token']
-        user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             playlist_id = request.json.get('playlist_id')
             song_id = request.json.get('song_id')
-            playlist_songs = create_playlist_songs(playlist_id, user_id, song_id)
+            playlist_songs = create_playlist_songs(playlist_id, user[1], song_id)
             if playlist_songs == 1:
                 debug_log.info('Song is added to the playlist')
                 return {'status': 201, 'message': 'Song is added to the playlist'}
@@ -152,11 +148,10 @@ def add_songs_to_playlist():
 def get_playlist_songs():
     try:
         token = request.headers['token']
-        user_id = request.args.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             playlist_id = request.args.get('playlist_id')
-            songs_list = get_songs_from_playlist(playlist_id, user_id)  
+            songs_list = get_songs_from_playlist(playlist_id, user[1])  
             debug_log.info('Song for playlist is fetched')
             return {'status': 200, 'message': songs_list}
         else:
@@ -171,11 +166,10 @@ def get_playlist_songs():
 def shuffle_playlist():
     try:
         token = request.headers['token']
-        user_id = request.json.get('user_id')
-        user = vbi_lib.token_validation(user_id, config['secret_key'], token)
+        user = decode_token(token, config['secret_key'])
         if user[0]:
             playlist_id = request.json.get('playlist_id')
-            songs_list = get_songs_from_playlist(playlist_id, user_id)
+            songs_list = get_songs_from_playlist(playlist_id, user[1])
             shuffled_songs = vbi_lib.get_shuffle_songs_list(songs_list) 
             debug_log.info('Songs for the playlist is shuffled') 
             return {'status': 200, 'message': shuffled_songs}

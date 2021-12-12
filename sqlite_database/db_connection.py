@@ -88,7 +88,6 @@ def create_user(email, password):
         return 0
 
 
-
 def create_playlist(playlist_name, user_id):
     try:
         playlist = PlayList.select().where(PlayList.playlist_name == playlist_name,PlayList.user_id == user_id).count()
@@ -120,7 +119,7 @@ def get_songs_from_playlist(playlist_id, user_id):
         songs = PlayListSongs().select().where(PlayListSongs.playlist_id == playlist_id, PlayListSongs.user_id == user_id)
         songs_list = []
         for each in songs:
-            song = SongsList().select().where(SongsList.song_id == each)
+            song = SongsList().select().where(SongsList.song_id == each.song_id)
             songs_list.append(song[0].song_name)
         return songs_list
     except Exception as err:
@@ -147,11 +146,6 @@ def get_user_id(email, password):
             return 1, user[0].user_id
         else:
             return 0, 'Invalid Credentials'
-
-
-if __name__ == '__main__':
-    create_database()
-    create_tables()
-    load_songs()
-    load_users()
+    except Exception as err:
+        print(err)
 
